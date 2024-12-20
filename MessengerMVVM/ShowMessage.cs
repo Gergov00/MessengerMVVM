@@ -8,7 +8,7 @@ namespace MessengerMVVM
         public static async void Message(string title, string message)
         {
             var messageBox = MessageBoxManager
-            .GetMessageBoxStandard(title, message);
+                .GetMessageBoxStandard(title, message);
             var result = await messageBox.ShowAsync();
         }
     }
