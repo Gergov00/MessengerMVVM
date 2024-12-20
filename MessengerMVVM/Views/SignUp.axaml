@@ -1,0 +1,107 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MessengerMVVM.ViewModels"
+        mc:Ignorable="d" 
+        d:DesignWidth="800" 
+        d:DesignHeight="450"
+        Background="White"
+        x:Class="MessengerMVVM.SignUp"
+        Title="SignUp">
+    
+    <!-- Установка DataContext для привязки данных -->
+    <Window.DataContext>
+        <vm:SignUpViewModel/>
+    </Window.DataContext>
+    
+    <Window.Styles>
+        <StyleInclude Source="avares://MessengerMVVM/Style/SignUpAndLogInPageStyle.axaml"/>
+    </Window.Styles>
+    
+    <!-- Установка x:DataType на StackPanel без повторного объявления xmlns -->
+    <StackPanel Margin="10"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               x:DataType="vm:SignUpViewModel">
+        <TextBlock Text="Регистрация"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"
+                   VerticalAlignment="Top"
+                   Foreground="Black"/>
+
+        <StackPanel Margin="0,0,0,10">
+            <TextBlock
+                Text="Имя пользователя:"
+                FontWeight="Bold"
+                Margin="0,0,0,5"
+                Foreground="Black"/>
+            <TextBox
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Background="White"
+                Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Введите имя"
+                Foreground="Gray"/>
+        </StackPanel>
+
+        <StackPanel Margin="0,0,0,10">
+            <TextBlock
+                Text="Электронная почта:"
+                FontWeight="Bold"
+                Margin="0,0,0,5"
+                Foreground="Black"/>
+            <TextBox
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Background="White"
+                Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Введите email"
+                Foreground="Gray"/>
+        </StackPanel>
+
+        <StackPanel Margin="0,0,0,10">
+            <TextBlock
+                Text="Пароль:"
+                FontWeight="Bold"
+                Margin="0,0,0,5"
+                Foreground="Black"/>
+            <TextBox
+                Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Background="White"
+                Watermark="Введите пароль"
+                PasswordChar="*"
+                Foreground="Gray"
+                Classes="SignUp"/>
+        </StackPanel>
+
+        <Button
+           Classes="SignUp"
+           Content="Зарегистрироваться"
+           Height="40"
+           HorizontalAlignment="Stretch"
+           Background="#9421db"
+           Foreground="White"
+           Command="{Binding SignUpCommand}"/>
+        
+        <TextBlock
+            Text="Если уже есть аккаунт"
+            Margin="0, 20, 0, 0"
+            Foreground="Black"/>
+        
+        <Button
+            Classes="LogIn"
+            Content="Войти"
+            Height="30"
+            Width="90"
+            HorizontalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Margin="5"
+            Foreground="White"
+            Background="#1ac960"/>
+    </StackPanel>
+</Window>
