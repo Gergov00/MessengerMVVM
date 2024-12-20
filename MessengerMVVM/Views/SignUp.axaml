@@ -8,11 +8,12 @@
         d:DesignHeight="450"
         Background="White"
         x:Class="MessengerMVVM.Views.SignUp"
-        Title="SignUp"
-		>
+        Title="SignUp">
 
 	<!-- Установка DataContext для привязки данных -->
-	
+	<Window.DataContext>
+		<vm:SignUpViewModel/>
+	</Window.DataContext>
 
 	<Window.Styles>
 		<StyleInclude Source="avares://MessengerMVVM/Style/SignUpAndLogInPageStyle.axaml"/>
