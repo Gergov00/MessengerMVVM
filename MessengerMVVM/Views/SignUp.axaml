@@ -3,18 +3,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MessengerMVVM.ViewModels"
+		xmlns:l="clr-namespace:MessengerMVVM"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
         Background="White"
         x:Class="MessengerMVVM.Views.SignUp"
+		d:DataContext="{d:DesignInstance vm:SignUpViewModel}"
+		x:DataType="vm:SignUpViewModel"
         Title="SignUp">
 
-	<!-- Установка DataContext для привязки данных -->
-	<Window.DataContext>
-		<vm:SignUpViewModel/>
-	</Window.DataContext>
-
+	
 	<Window.Styles>
 		<StyleInclude Source="avares://MessengerMVVM/Style/SignUpAndLogInPageStyle.axaml"/>
 	</Window.Styles>
@@ -22,8 +21,7 @@
 	<!-- Установка x:DataType на StackPanel без повторного объявления xmlns -->
 	<StackPanel Margin="10"
                HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               x:DataType="vm:SignUpViewModel">
+               VerticalAlignment="Center">
 		<TextBlock Text="Регистрация"
                    FontSize="20"
                    FontWeight="Bold"
@@ -96,7 +94,7 @@
 		<Button
             Classes="LogIn"
             Content="Войти"
-			Command="{Binding GoLogInPage}"
+			Command="{Binding GoLogInPageCommand}"
             Height="30"
             Width="90"
             HorizontalAlignment="Center"

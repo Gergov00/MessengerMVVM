@@ -1,17 +1,74 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using MessengerMVVM.Services;
+using MessengerMVVM.Services.Implementations;
 using MessengerMVVM.ViewModels;
 using MessengerMVVM.Views;
-using System.Linq;
-using MessengerMVVM.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MessengerMVVM
 {
     public partial class App : Application
     {
+        private static IServiceProvider? _services;
+        public static IServiceProvider Services => _services ??= InitializeServices().BuildServiceProvider();
+
+        private static IServiceCollection InitializeServices()
+        {
+            var services = new ServiceCollection();
+
+            // Регистрация ViewModels
+            services.AddSingleton<SignUpViewModel>();
+            services.AddScoped<LogInViewModel>();
+            services.AddScoped<MainWindowViewModel>();
+
+            // Регистрация сервисов
+            services.AddSingleton<IUserDialog, UserDialogService>();
+
+            // Регистрация окон с их ViewModel
+            services.AddTransient<MainWindow>(s =>
+            {
+                var viewModel = s.GetRequiredService<MainWindowViewModel>();
+                var window = new MainWindow(s)
+                {
+                    DataContext = viewModel
+                };
+                //s.GetRequiredService<IUserDialog>().RegisterCloseAction(() => window.Close());
+
+                return window;
+            });
+
+            services.AddTransient<SignUp>(s =>
+            {
+
+                var viewModel = s.GetRequiredService<SignUpViewModel>();
+                var window = new SignUp(s)
+                {
+                    DataContext = viewModel
+                };
+                //s.GetRequiredService<IUserDialog>().RegisterCloseAction(() => window.Close());
+
+                return window;
+            });
+
+            services.AddTransient<LogIn>(s =>
+            {
+                var viewModel = s.GetRequiredService<LogInViewModel>();
+                var window = new LogIn(s)
+                {
+                    DataContext = viewModel
+                };
+                //s.GetRequiredService<IUserDialog>().RegisterCloseAction(() => window.Close());
+
+                return window;
+            });
+
+            return services;
+        }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -21,29 +78,15 @@ namespace MessengerMVVM
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-                // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-                DisableAvaloniaDataAnnotationValidation();
-                desktop.MainWindow = new SignUp
-                {
-                    DataContext = new SignUpViewModel(),
-                };
+                desktop.ShutdownMode = ShutdownMode.OnLastWindowClose;
+
+                // Получаем и показываем начальное окно (SignUp)
+                var signUpWindow = Services.GetRequiredService<SignUp>();
+                desktop.MainWindow = signUpWindow;
+                signUpWindow.Show();
             }
 
             base.OnFrameworkInitializationCompleted();
-        }
-
-        private void DisableAvaloniaDataAnnotationValidation()
-        {
-            // Get an array of plugins to remove
-            var dataValidationPluginsToRemove =
-                BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
-
-            // remove each entry found
-            foreach (var plugin in dataValidationPluginsToRemove)
-            {
-                BindingPlugins.DataValidators.Remove(plugin);
-            }
         }
     }
 }

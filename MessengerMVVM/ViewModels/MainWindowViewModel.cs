@@ -1,16 +1,23 @@
 ﻿using System.ComponentModel;
 using MessengerMVVM.Models;
+using MessengerMVVM.Services;
 
 namespace MessengerMVVM.ViewModels
 {
-    public partial class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
+    public partial class MainWindowViewModel : WindowViewModelBase, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string Greeting { get; } = "Welcome to Avalonia!";
+        private readonly IUserDialog _userDialog;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public MainWindowViewModel(IUserDialog userDialog)
+        {
+            _userDialog = userDialog;
         }
 
         private int _number1;

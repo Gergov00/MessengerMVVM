@@ -2,8 +2,87 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="clr-namespace:MessengerMVVM.ViewModels"
+        xmlns:l="clr-namespace:MessengerMVVM"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        Background="White"
         x:Class="MessengerMVVM.Views.LogIn"
+        d:DataContext="{d:DesignInstance vm:LogInViewModel, IsDesignTimeCreatable=True}"
+        x:DataType="vm:LogInViewModel"
         Title="LogIn">
-  Welcome to Avalonia!
+
+	<Window.Styles>
+		<StyleInclude Source="avares://MessengerMVVM/Style/SignUpAndLogInPageStyle.axaml"/>
+	</Window.Styles>
+
+	<StackPanel Margin="10"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center">
+		<TextBlock Text="Вход"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"
+                   VerticalAlignment="Top"
+                   Foreground="Black"/>
+
+		<StackPanel Margin="0,0,0,10">
+			<TextBlock
+                Text="Имя пользователя / email:"
+                FontWeight="Bold"
+                Margin="0,0,0,5"
+                Foreground="Black"/>
+			<TextBox
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Background="White"
+                Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Введите имя"
+                Foreground="Gray"/>
+		</StackPanel>
+
+		<StackPanel Margin="0,0,0,10">
+			<TextBlock
+                Text="Пароль:"
+                FontWeight="Bold"
+                Margin="0,0,0,5"
+                Foreground="Black"/>
+			<TextBox
+                Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Background="White"
+                Watermark="Введите пароль"
+                PasswordChar="*"
+                Foreground="Gray"/>
+		</StackPanel>
+
+		<Button
+            Classes="SignUp"
+            Command="{Binding LogInCommand}"
+            Content="Войти"
+            Height="40"
+            HorizontalAlignment="Stretch"
+            Background="#9421db"
+            Foreground="White"/>
+
+		<TextBlock
+            Text="Если уже есть аккаунт"
+            Margin="0, 20, 0, 0"
+            Foreground="Black"/>
+
+		<Button
+            Classes="LogIn"
+            Content="Войти"
+            Height="30"
+            Width="90"
+            Command="{Binding GoToSignUpPageCommand}"
+            HorizontalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Margin="5"
+            Foreground="White"
+            Background="#1ac960"/>
+	</StackPanel>
 </Window>

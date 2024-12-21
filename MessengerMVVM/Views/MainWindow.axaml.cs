@@ -1,6 +1,9 @@
 using Avalonia.Controls;
 using Tmds.DBus.Protocol;
 using MessengerMVVM.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using MessengerMVVM.Services;
 
 namespace MessengerMVVM.Views
 {
@@ -9,7 +12,13 @@ namespace MessengerMVVM.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+        }
+
+        public MainWindow(IServiceProvider serviceProvider) : this()
+        {
+            var viewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
+            this.DataContext = viewModel;
+            viewModel.RequestClose += () => this.Close();
         }
     }
 }
